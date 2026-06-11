@@ -1,0 +1,226 @@
+/* ==========================================================================
+   🎨 VARIÁVEIS DE CORES & TEMA
+   ========================================================================== */
+[data-theme="light"] {
+    --bg-color: #f0f5f3;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --text-color: #2c3e50;
+    --primary-color: #2e7d32;
+    --accent-color: #4caf50;
+    --border-color: #c8e6c9;
+    --line-glow: rgba(76, 175, 80, 0.15);
+}
+
+[data-theme="dark"] {
+    --bg-color: #0a0f0d;
+    --card-bg: rgba(26, 34, 30, 0.85);
+    --text-color: #e0e0e0;
+    --primary-color: #00e676;
+    --accent-color: #00c853;
+    --border-color: #1b5e20;
+    --line-glow: rgba(0, 230, 118, 0.3);
+}
+
+/* ==========================================================================
+   🌿 ESTILOS GERAIS & LINHAS ESTRUTURAIS
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    background-image: 
+        linear-gradient(to right, var(--line-glow) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--line-glow) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--accent-color);
+    box-shadow: 0 4px 20px var(--line-glow);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+nav button {
+    background: transparent;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-color);
+    position: relative;
+}
+
+nav button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s, left 0.3s;
+}
+
+nav button:hover::after { width: 80%; left: 10%; }
+nav button:hover { color: var(--primary-color); }
+
+#btn-theme {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   🖼️ TELAS & CONTAINER PRINCIPAL (Glassmorphism e Animações)
+   ========================================================================== */
+.tela {
+    padding: 2.5rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hidden { display: none !important; }
+
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.contadores, .grid-culturas, .grid-medalhas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.card-contador, .status-box, .chat-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    padding: 1.8rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   🌾 CARDS DE SELEÇÃO DE CULTURA (VERSÃO COM EMOJIS)
+   ========================================================================== */
+.card-cultura {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem !important;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-cultura::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: var(--primary-color);
+}
+
+.emoji-cultura {
+    display: block;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.card-cultura:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 20px var(--line-glow);
+}
+
+.card-cultura:hover .emoji-cultura {
+    transform: scale(1.15);
+}
+
+/* ==========================================================================
+   🔘 BOTÕES, SLIDERS & INTERFACE
+   ========================================================================== */
+.btn-principal {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white; border: none; padding: 0.8rem 1.8rem; font-size: 1rem;
+    font-weight: bold; border-radius: 30px; cursor: pointer;
+    box-shadow: 0 4px 15px var(--line-glow); transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-principal:hover { transform: scale(1.03); box-shadow: 0 6px 20px var(--primary-color); }
+
+.grid-energia { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.btn-energia {
+    flex: 1; padding: 1rem; border: 1px solid var(--border-color); background: transparent;
+    color: var(--text-color); cursor: pointer; font-weight: bold; border-radius: 8px;
+}
+.btn-energia:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+input[type="range"] { -webkit-appearance: none; width: 100%; height: 8px; background: var(--border-color); border-radius: 4px; outline: none; }
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--primary-color); cursor: pointer; box-shadow: 0 0 10px var(--primary-color);
+}
+
+.bonus { color: #f57c00; font-weight: bold; margin-top: 0.5rem; }
+.comparador, .canvas-container { margin-top: 1.5rem; text-align: center; }
+
+/* ==========================================================================
+   🚨 TOAST & CHAT
+   ========================================================================== */
+#toast {
+    position: fixed; bottom: 20px; right: 20px; background: var(--text-color);
+    color: var(--bg-color); padding: 1rem 1.5rem; border-radius: 8px;
+    border-left: 4px solid var(--primary-color); font-weight: 600; z-index: 1000;
+}
+
+.chat-output { height: 180px; overflow-y: auto; border: 1px solid var(--border-color); margin-bottom: 1rem; padding: 0.8rem; border-radius: 6px; }
+.chat-input-area { display: flex; gap: 0.5rem; }
+.chat-input-area input { flex: 1; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 6px; background: transparent; color: var(--text-color); }
+.bot-msg { color: var(--primary-color); font-weight: bold; margin-top: 0.5rem; }
+
+/* ==========================================================================
+   🧦 RODAPÉ (FOOTER)
+   ========================================================================== */
+footer {
+    background: var(--card-bg); backdrop-filter: blur(10px);
+    border-top: 2px solid var(--border-color); padding: 2rem 1.5rem; margin-top: 4rem;
+    box-shadow: 0 -4px 20px var(--line-glow);
+}
+.footer-container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; }
+.footer-info h4 { color: var(--primary-color); font-size: 1.2rem; margin-bottom: 0.3rem; text-transform: uppercase; }
+.footer-info p, .footer-status p, .footer-creditos p { font-size: 0.9rem; opacity: 0.8; }
+.status-online { color: var(--primary-color); font-weight: bold; animation: pulseGlow 2s infinite; }
+@keyframes pulseGlow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 0 0 8px var(--primary-color); } }
+@media (max-width: 768px) { .footer-container { flex-direction: column; text-align: center; } }

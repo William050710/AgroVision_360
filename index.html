@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroVision - Simulador Sustentável</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">🌱 AgroVision</div>
+        <nav>
+            <button onclick="mudarTela('home')">Home</button>
+            <button onclick="mudarTela('fazenda')">Fazenda</button>
+            <button onclick="mudarTela('irrigacao')">Irrigação</button>
+            <button onclick="mudarTela('energia')">Energia</button>
+            <button onclick="mudarTela('dashboard')">Dashboard</button>
+            <button onclick="mudarTela('desafios')">Desafios</button>
+            <button onclick="mudarTela('ia')">Assistente IA</button>
+        </nav>
+        <button id="btn-theme">🌙</button>
+    </header>
+
+    <div id="toast" class="hidden"></div>
+
+    <main>
+        <section id="tela-home" class="tela ativa">
+            <div class="hero">
+                <h1>Cultive o Futuro Sustentável</h1>
+                <p>Simule decisões agrícolas e veja o impacto real no planeta.</p>
+                <button class="btn-principal" onclick="mudarTela('fazenda')">Começar Simulação</button>
+            </div>
+            <div class="contadores">
+                <div class="card-contador">
+                    <h3 id="count-agua">0</h3>
+                    <p>Litros de água economizados</p>
+                </div>
+                <div class="card-contador">
+                    <h3 id="count-co2">0</h3>
+                    <p>Kg de CO₂ reduzido</p>
+                </div>
+                <div class="card-contador">
+                    <h3 id="count-arvores">0</h3>
+                    <p>Árvores preservadas</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tela-fazenda" class="tela hidden">
+            <h2>Escolha sua Plantação</h2>
+            <div class="grid-culturas">
+                <div class="card-cultura" onclick="selecionarCultura('Soja', 500, 1200, 4)">
+                    <div class="card-conteudo">
+                        <span class="emoji-cultura">🌱</span>
+                        <h3>Soja</h3>
+                        <p>Consumo Água: Alto | Lucro: Alto</p>
+                    </div>
+                </div>
+                <div class="card-cultura" onclick="selecionarCultura('Milho', 300, 800, 3)">
+                    <div class="card-conteudo">
+                        <span class="emoji-cultura">🌽</span>
+                        <h3>Milho</h3>
+                        <p>Consumo Água: Médio | Lucro: Médio</p>
+                    </div>
+                </div>
+                <div class="card-cultura" onclick="selecionarCultura('Café', 400, 1500, 2)">
+                    <div class="card-conteudo">
+                        <span class="emoji-cultura">☕</span>
+                        <h3>Café</h3>
+                        <p>Consumo Água: Alto | Lucro: Muito Alto</p>
+                    </div>
+                </div>
+                <div class="card-cultura" onclick="selecionarCultura('Hortaliças', 150, 500, 1)">
+                    <div class="card-conteudo">
+                        <span class="emoji-cultura">🥦</span>
+                        <h3>Hortaliças</h3>
+                        <p>Consumo Água: Baixo | Lucro: Baixo</p>
+                    </div>
+                </div>
+            </div>
+            <div id="status-fazenda" class="status-box"></div>
+        </section>
+
+        <section id="tela-irrigacao" class="tela hidden">
+            <h2>💧 Controle de Irrigação</h2>
+            <div class="controle-slider">
+                <label for="slider-agua">Quantidade de Água:</label>
+                <input type="range" id="slider-agua" min="1" max="100" value="50">
+                <span id="valor-slider">50%</span>
+            </div>
+            <div class="resultados-reais">
+                <p>Água Utilizada: <span id="res-agua">0</span>L</p>
+                <p>Desperdício: <span id="res-desperdicio">0</span>L</p>
+                <p>Eficiência: <span id="res-eficiencia">0</span>%</p>
+                <p id="bonus-sustentavel" class="bonus hidden">🌟 Bônus Sustentável Ativado!</p>
+            </div>
+            <br>
+            <button class="btn-principal" onclick="confirmarIrrigacao()">Confirmar e Avançar ➡️</button>
+        </section>
+
+        <section id="tela-energia" class="tela hidden">
+            <h2>☀️ Matriz Energética</h2>
+            <div class="grid-energia">
+                <button class="btn-energia" onclick="selecionarEnergia('Diesel', 500, 1000, 1)">🚜 Diesel</button>
+                <button class="btn-energia" onclick="selecionarEnergia('Elétrica', 250, 500, 5)">⚡ Elétrica</button>
+                <button class="btn-energia" onclick="selecionarEnergia('Solar', 50, 100, 10)">☀️ Solar</button>
+            </div>
+            <div class="comparador">
+                <canvas id="grafico-energia" width="400" height="200"></canvas>
+            </div>
+        </section>
+
+        <section id="tela-dashboard" class="tela hidden">
+            <h2>🌎 Dashboard Ambiental</h2>
+            <div class="resumo-indicadores">
+                <p>Cultura: <span id="dash-cultura">-</span></p>
+                <p>Gasto Total Água: <span id="dash-agua">0</span>L</p>
+                <p>Gasto Energia: $<span id="dash-custo-energia">0</span></p>
+                <p>Sustentabilidade: <span id="dash-sustentabilidade">0</span>/100</p>
+            </div>
+            <div class="canvas-container">
+                <canvas id="grafico-dashboard" width="300" height="300"></canvas>
+            </div>
+            <br>
+            <button class="btn-principal" onclick="confirmarDashboard()">Ver Meus Desafios ➡️</button>
+        </section>
+
+        <section id="tela-desafios" class="tela hidden">
+            <h2>🎯 Missões e Conquistas</h2>
+            <div class="missoes">
+                <div class="missao" id="m-agua">💧 Economize água (Eficiência > 80%)</div>
+                <div class="missao" id="m-energia">☀️ Use energia limpa (Solar)</div>
+            </div>
+            <h3>🏅 Suas Medalhas</h3>
+            <div id="medalhas-container" class="grid-medalhas"></div>
+            <br>
+            <button class="btn-principal" onclick="confirmarDesafios()">Falar com a IA ➡️</button>
+        </section>
+
+        <section id="tela-ia" class="tela hidden">
+            <h2>🤖 Assistente AgroVision IA</h2>
+            <div class="chat-box">
+                <div id="chat-output" class="chat-output">
+                    <p class="bot-msg">Olá! Pergunte-me sobre "água", "energia", "lucro" ou "sustentabilidade".</p>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Digite sua dúvida aqui...">
+                    <button class="btn-principal" onclick="perguntarIA()">Enviar</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-info">
+                <h4>🌱 AgroVision</h4>
+                <p>Simulador de Agricultura Sustentável Inteligente.</p>
+            </div>
+            <div class="footer-status">
+                <p><strong>Status do Sistema:</strong> <span class="status-online">● Online</span></p>
+                <p><strong>Versão:</strong> 2.0</p>
+            </div>
+            <div class="footer-creditos">
+                <p>Desenvolvido para fins educacionais</p>
+                <p>&copy; 2026 AgroVision. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
