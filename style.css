@@ -1,5 +1,5 @@
 /* ==========================================================================
-   🎨 VARIÁVEIS DE CORES & TEMA
+   🎨 VARIÁVEIS DE CORES & TEMA (GLASSMORPHISM)
    ========================================================================== */
 [data-theme="light"] {
     --bg-color: #f0f5f3;
@@ -22,7 +22,7 @@
 }
 
 /* ==========================================================================
-   🌿 ESTILOS GERAIS & LINHAS ESTRUTURAIS
+   🌿 ESTILOS GERAIS & ANIMATED BACKGROUND GRID
    ========================================================================== */
 * {
     margin: 0;
@@ -35,10 +35,21 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    background-image: 
+    background-image:
         linear-gradient(to right, var(--line-glow) 1px, transparent 1px),
         linear-gradient(to bottom, var(--line-glow) 1px, transparent 1px);
     background-size: 40px 40px;
+    animation: moverGrade 20s linear infinite;
+}
+
+@keyframes moverGrade {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 40px 40px;
+    }
 }
 
 header {
@@ -81,8 +92,14 @@ nav button::after {
     transition: width 0.3s, left 0.3s;
 }
 
-nav button:hover::after { width: 80%; left: 10%; }
-nav button:hover { color: var(--primary-color); }
+nav button:hover::after {
+    width: 80%;
+    left: 10%;
+}
+
+nav button:hover {
+    color: var(--primary-color);
+}
 
 #btn-theme {
     background: transparent;
@@ -92,7 +109,23 @@ nav button:hover { color: var(--primary-color); }
 }
 
 /* ==========================================================================
-   🖼️ TELAS & CONTAINER PRINCIPAL (Glassmorphism e Animações)
+   🖼️ TITULO E PARAGRAFO
+   ========================================================================== */
+.textoinicio {
+    font-size: 3.5rem;
+    /* Tamanho grande e moderno */
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    /* Letras mais juntas, estilo editorial moderno */
+    line-height: 1.1;
+    color: #77b89e;
+    /* Um verde floresta quase preto */
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   🖼️ ESTRUTURA DE COMPONENTES E TELAS
    ========================================================================== */
 .tela {
     padding: 2.5rem;
@@ -106,21 +139,34 @@ nav button:hover { color: var(--primary-color); }
     animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hidden { display: none !important; }
-
-@keyframes slideUpFade {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.hidden {
+    display: none !important;
 }
 
-.contadores, .grid-culturas, .grid-medalhas {
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.contadores,
+.grid-culturas,
+.grid-medalhas {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
 }
 
-.card-contador, .status-box, .chat-box {
+.card-contador,
+.status-box,
+.chat-box {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-color);
     padding: 1.8rem;
@@ -129,13 +175,13 @@ nav button:hover { color: var(--primary-color); }
 }
 
 /* ==========================================================================
-   🌾 CARDS DE SELEÇÃO DE CULTURA (VERSÃO COM EMOJIS)
+   🌾 CARDS DE SELEÇÃO DE CULTURA
    ========================================================================== */
 .card-cultura {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 2rem !important;
+    padding: 2.5rem 1.5rem !important;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -152,17 +198,36 @@ nav button:hover { color: var(--primary-color); }
     background: var(--primary-color);
 }
 
+.card-conteudo {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .emoji-cultura {
     display: block;
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
+    font-size: 3.8rem;
+    margin-bottom: 1.2rem;
     transition: transform 0.3s ease;
 }
 
+.card-cultura h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+    color: var(--text-color);
+}
+
+.card-cultura p {
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+
 .card-cultura:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
     border-color: var(--primary-color);
-    box-shadow: 0 10px 20px var(--line-glow);
+    box-shadow: 0 0 25px var(--primary-color), inset 0 0 10px var(--line-glow);
 }
 
 .card-cultura:hover .emoji-cultura {
@@ -170,57 +235,335 @@ nav button:hover { color: var(--primary-color); }
 }
 
 /* ==========================================================================
-   🔘 BOTÕES, SLIDERS & INTERFACE
+   🔘 INTERFACES, CONTROLES (SLIDERS) & BOTÕES SHINE EFFECT
    ========================================================================== */
 .btn-principal {
+    position: relative;
+    overflow: hidden;
     background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    color: white; border: none; padding: 0.8rem 1.8rem; font-size: 1rem;
-    font-weight: bold; border-radius: 30px; cursor: pointer;
-    box-shadow: 0 4px 15px var(--line-glow); transition: transform 0.2s, box-shadow 0.2s;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--line-glow);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
-.btn-principal:hover { transform: scale(1.03); box-shadow: 0 6px 20px var(--primary-color); }
 
-.grid-energia { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.btn-principal:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px var(--primary-color);
+}
+
+.btn-principal::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 20%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: skewX(-30deg);
+    animation: brilharBotao 4s infinite linear;
+}
+
+@keyframes brilharBotao {
+    0% {
+        left: -30%;
+    }
+
+    30% {
+        left: 130%;
+    }
+
+    100% {
+        left: 130%;
+    }
+}
+
+.grid-energia {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
 .btn-energia {
-    flex: 1; padding: 1rem; border: 1px solid var(--border-color); background: transparent;
-    color: var(--text-color); cursor: pointer; font-weight: bold; border-radius: 8px;
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 8px;
 }
-.btn-energia:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); }
 
-input[type="range"] { -webkit-appearance: none; width: 100%; height: 8px; background: var(--border-color); border-radius: 4px; outline: none; }
+.btn-energia:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 12px;
+    background: linear-gradient(90deg, #2196f3, #4caf50);
+    border-radius: 6px;
+    outline: none;
+}
+
 input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
-    background: var(--primary-color); cursor: pointer; box-shadow: 0 0 10px var(--primary-color);
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid var(--primary-color);
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--primary-color);
+    transition: transform 0.1s;
 }
 
-.bonus { color: #f57c00; font-weight: bold; margin-top: 0.5rem; }
-.comparador, .canvas-container { margin-top: 1.5rem; text-align: center; }
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.bonus {
+    color: #f57c00;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.comparador,
+.canvas-container {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+/* ==========================================================================
+   📊 LAYOUT DO DASHBOARD AMBIENTAL
+   ========================================================================== */
+.dashboard-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 1.5rem;
+}
+
+.dashboard-col-grafico {
+    flex: 1;
+    min-width: 320px;
+    max-width: 480px;
+    text-align: center;
+}
+
+.legenda-grafico {
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.dashboard-col-info {
+    flex: 1.2;
+    min-width: 320px;
+}
+
+.resumo-indicadores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    text-align: left !important;
+}
+
+.mini-card-dash {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.mini-card-dash span {
+    font-size: 0.85rem;
+    opacity: 0.75;
+    margin-bottom: 0.2rem;
+}
+
+.mini-card-dash strong {
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+/* ==========================================================================
+   🎯 ESTILOS DA TELA DE DESAFIOS DINÂMICOS
+   ========================================================================== */
+.missoes {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.missao-card {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.2rem;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.missao-icone {
+    font-size: 2rem;
+    min-width: 45px;
+    text-align: center;
+}
+
+.missao-texto {
+    flex: 1;
+    text-align: left;
+}
+
+.missao-texto h4 {
+    font-size: 1.15rem;
+    color: var(--text-color);
+    margin-bottom: 0.2rem;
+}
+
+.missao-texto p {
+    font-size: 0.9rem;
+    opacity: 0.75;
+}
+
+.missao-status {
+    font-weight: bold;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
 /* ==========================================================================
    🚨 TOAST & CHAT
    ========================================================================== */
 #toast {
-    position: fixed; bottom: 20px; right: 20px; background: var(--text-color);
-    color: var(--bg-color); padding: 1rem 1.5rem; border-radius: 8px;
-    border-left: 4px solid var(--primary-color); font-weight: 600; z-index: 1000;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--text-color);
+    color: var(--bg-color);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    font-weight: 600;
+    z-index: 1000;
 }
 
-.chat-output { height: 180px; overflow-y: auto; border: 1px solid var(--border-color); margin-bottom: 1rem; padding: 0.8rem; border-radius: 6px; }
-.chat-input-area { display: flex; gap: 0.5rem; }
-.chat-input-area input { flex: 1; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 6px; background: transparent; color: var(--text-color); }
-.bot-msg { color: var(--primary-color); font-weight: bold; margin-top: 0.5rem; }
+.chat-output {
+    height: 180px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    border-radius: 6px;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-color);
+}
+
+.bot-msg {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
 
 /* ==========================================================================
-   🧦 RODAPÉ (FOOTER)
+   🧦 RODAPÉ (FOOTER RESPONSIVO)
    ========================================================================== */
 footer {
-    background: var(--card-bg); backdrop-filter: blur(10px);
-    border-top: 2px solid var(--border-color); padding: 2rem 1.5rem; margin-top: 4rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    margin-top: 4rem;
     box-shadow: 0 -4px 20px var(--line-glow);
 }
-.footer-container { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; }
-.footer-info h4 { color: var(--primary-color); font-size: 1.2rem; margin-bottom: 0.3rem; text-transform: uppercase; }
-.footer-info p, .footer-status p, .footer-creditos p { font-size: 0.9rem; opacity: 0.8; }
-.status-online { color: var(--primary-color); font-weight: bold; animation: pulseGlow 2s infinite; }
-@keyframes pulseGlow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 0 0 8px var(--primary-color); } }
-@media (max-width: 768px) { .footer-container { flex-direction: column; text-align: center; } }
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-info h4 {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+}
+
+.footer-info p,
+.footer-status p,
+.footer-creditos p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.status-online {
+    color: var(--primary-color);
+    font-weight: bold;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 8px var(--primary-color);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .footer-container,
+    .dashboard-layout {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .resumo-indicadores {
+        grid-template-columns: 1fr;
+    }
+
+    .mini-card-dash {
+        grid-column: span 1 !important;
+    }
+}

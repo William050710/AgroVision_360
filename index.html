@@ -28,7 +28,7 @@
         <section id="tela-home" class="tela ativa">
             <div class="hero">
                 <h1>Cultive o Futuro Sustentável</h1>
-                <p>Simule decisões agrícolas e veja o impacto real no planeta.</p>
+                <p class="textoinicio">Simule decisões agrícolas e veja o impacto real no planeta.</p>
                 <button class="btn-principal" onclick="mudarTela('fazenda')">Começar Simulação</button>
             </div>
             <div class="contadores">
@@ -101,41 +101,130 @@
 
         <section id="tela-energia" class="tela hidden">
             <h2>☀️ Matriz Energética</h2>
+            <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem;">Selecione uma fonte para analisar o impacto financeiro e ambiental:</p>
+            
             <div class="grid-energia">
-                <button class="btn-energia" onclick="selecionarEnergia('Diesel', 500, 1000, 1)">🚜 Diesel</button>
-                <button class="btn-energia" onclick="selecionarEnergia('Elétrica', 250, 500, 5)">⚡ Elétrica</button>
-                <button class="btn-energia" onclick="selecionarEnergia('Solar', 50, 100, 10)">☀️ Solar</button>
+                <button class="btn-energia" onclick="selecionarEnergia('Diesel', 500, 1000)">🚜 Diesel</button>
+                <button class="btn-energia" onclick="selecionarEnergia('Elétrica', 250, 500)">⚡ Elétrica</button>
+                <button class="btn-energia" onclick="selecionarEnergia('Solar', 50, 100)">☀️ Solar</button>
             </div>
-            <div class="comparador">
-                <canvas id="grafico-energia" width="400" height="200"></canvas>
+
+            <div class="comparador" style="text-align: left; max-width: 500px; margin: 2rem auto;">
+                <h3 id="titulo-energia-selecionada" style="margin-bottom: 1rem; text-align: center; color: var(--primary-color);">Selecione uma opção acima</h3>
+                
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                        <span>Custo Operacional:</span>
+                        <span id="txt-custo">$0</span>
+                    </div>
+                    <div style="width: 100%; height: 12px; background: rgba(0,0,0,0.1); border-radius: 6px; overflow: hidden;">
+                        <div id="barra-custo" style="width: 0%; height: 100%; background: #e53935; transition: width 0.8s ease-out; border-radius: 6px;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                        <span>Emissões de CO₂:</span>
+                        <span id="txt-emissoes">0 kg</span>
+                    </div>
+                    <div style="width: 100%; height: 12px; background: rgba(0,0,0,0.1); border-radius: 6px; overflow: hidden;">
+                        <div id="barra-emissoes" style="width: 0%; height: 100%; background: #757575; transition: width 0.8s ease-out; border-radius: 6px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button id="btn-avancar-energia" class="btn-principal hidden" onclick="confirmarEnergia()">Confirmar e Avançar ➡️</button>
             </div>
         </section>
 
         <section id="tela-dashboard" class="tela hidden">
-            <h2>🌎 Dashboard Ambiental</h2>
-            <div class="resumo-indicadores">
-                <p>Cultura: <span id="dash-cultura">-</span></p>
-                <p>Gasto Total Água: <span id="dash-agua">0</span>L</p>
-                <p>Gasto Energia: $<span id="dash-custo-energia">0</span></p>
-                <p>Sustentabilidade: <span id="dash-sustentabilidade">0</span>/100</p>
+            <h2>🌎 Painel de Controle e Impacto Ambiental</h2>
+            <p style="text-align: center; opacity: 0.8; margin-bottom: 2rem;">Confira o balanço geral da sua rodada e o nível de sustentabilidade atingido:</p>
+            
+            <div class="dashboard-layout">
+                <div class="dashboard-col-grafico">
+                    <div class="canvas-container">
+                        <canvas id="grafico-dashboard" width="450" height="450"></canvas>
+                    </div>
+                    <div class="legenda-grafico">
+                        <span style="color: #4caf50;">● Consumo de Água</span>
+                        <span style="color: #ffb74d; margin-left: 1.5rem;">● Custo de Energia</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-col-info">
+                    <div class="resumo-indicadores">
+                        <div class="mini-card-dash">
+                            <span>Cultura Selecionada:</span>
+                            <strong id="dash-cultura">-</strong>
+                        </div>
+                        <div class="mini-card-dash">
+                            <span>Gasto Total de Água:</span>
+                            <strong id="dash-agua">0 L</strong>
+                        </div>
+                        <div class="mini-card-dash">
+                            <span>Gasto com Energia:</span>
+                            <strong id="dash-custo-energia">$0</strong>
+                        </div>
+                        <div class="mini-card-dash">
+                            <span>Matriz Utilizada:</span>
+                            <strong id="dash-tipo-energia">-</strong>
+                        </div>
+                        <div class="mini-card-dash">
+                            <span>Retorno Financeiro Estimado:</span>
+                            <strong id="dash-lucro" style="color: #2e7d32;">$0</strong>
+                        </div>
+                        <div class="mini-card-dash">
+                            <span>Pontuação de Sustentabilidade:</span>
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.3rem;">
+                                <strong id="dash-sustentabilidade" style="font-size: 1.8rem; color: var(--primary-color);">0</strong>
+                                <span style="font-size: 1.2rem;">/ 100</span>
+                            </div>
+                        </div>
+                        <div class="mini-card-dash" style="grid-column: span 2; background: rgba(76, 175, 80, 0.1); border-color: var(--primary-color);">
+                            <span>Diagnóstico da sua Fazenda:</span>
+                            <p id="dash-diagnostico" style="font-size: 0.95rem; font-weight: 600; margin-top: 0.4rem; opacity: 0.9;">Selecione os parâmetros para rodar o diagnóstico.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="canvas-container">
-                <canvas id="grafico-dashboard" width="300" height="300"></canvas>
+
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <button class="btn-principal" onclick="confirmarDashboard()">Ver Meus Desafios ➡️</button>
             </div>
-            <br>
-            <button class="btn-principal" onclick="confirmarDashboard()">Ver Meus Desafios ➡️</button>
         </section>
 
         <section id="tela-desafios" class="tela hidden">
-            <h2>🎯 Missões e Conquistas</h2>
+            <h2>🎯 Missões e Conquistas da Rodada</h2>
+            <p style="text-align: center; opacity: 0.8; margin-bottom: 2rem;">Veja se suas decisões atingiram as metas de sustentabilidade estipuladas:</p>
+            
             <div class="missoes">
-                <div class="missao" id="m-agua">💧 Economize água (Eficiência > 80%)</div>
-                <div class="missao" id="m-energia">☀️ Use energia limpa (Solar)</div>
+                <div class="missao-card" id="card-missao-agua">
+                    <div class="missao-icone" id="icone-missao-agua">⏳</div>
+                    <div class="missao-texto">
+                        <h4>Guardião da Água</h4>
+                        <p>Alcance mais de 80% de eficiência no sistema de irrigação.</p>
+                    </div>
+                    <span class="missao-status" id="status-missao-agua">Pendente</span>
+                </div>
+
+                <div class="missao-card" id="card-missao-energia">
+                    <div class="missao-icone" id="icone-missao-energia">⏳</div>
+                    <div class="missao-texto">
+                        <h4>Carbono Zero</h4>
+                        <p>Substitua combustíveis fósseis por energia 100% limpa (Solar).</p>
+                    </div>
+                    <span class="missao-status" id="status-missao-energia">Pendente</span>
+                </div>
             </div>
-            <h3>🏅 Suas Medalhas</h3>
+
+            <h3 style="margin-top: 3rem; text-align: center;">🏅 Sua Galeria de Medalhas</h3>
             <div id="medalhas-container" class="grid-medalhas"></div>
-            <br>
-            <button class="btn-principal" onclick="confirmarDesafios()">Falar com a IA ➡️</button>
+            
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <button class="btn-principal" onclick="confirmarDesafios()">Falar com a IA ➡️</button>
+            </div>
         </section>
 
         <section id="tela-ia" class="tela hidden">
@@ -172,3 +261,19 @@
     <script src="script.js"></script>
 </body>
 </html>
+<section id="tela-ia" class="tela hidden">
+            <h2>🤖 Assistente AgroVision IA</h2>
+            <div class="chat-box">
+                <div id="chat-output" class="chat-output">
+                    <p class="bot-msg">Olá! Pergunte-me sobre "água", "energia", "lucro" ou "sustentabilidade".</p>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Digite sua dúvida aqui...">
+                    <button class="btn-principal" onclick="perguntarIA()">Enviar</button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <button class="btn-principal" style="background: linear-gradient(135deg, #ff5722, #f44336);" onclick="recomecarSimulacao()">🔄 Recomeçar Simulação</button>
+            </div>
+        </section>

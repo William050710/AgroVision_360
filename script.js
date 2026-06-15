@@ -59,7 +59,7 @@ function animarContador(id, valorFinal) {
 window.onload = rodarContadores;
 
 // ==========================================================================
-// 🌾 TELA 2: ESCOLHA DA FAZENDA ➡️ AVANÇA PRO CLIQUE
+// 🌾 TELA 2: ESCOLHA DA FAZENDA
 // ==========================================================================
 function selecionarCultura(nome, agua, lucro, impacto) {
     simulacao.cultura = nome;
@@ -79,13 +79,13 @@ function selecionarCultura(nome, agua, lucro, impacto) {
 }
 
 // ==========================================================================
-// 💧 TELA 3: SISTEMA DE IRRIGAÇÃO ➡️ AVANÇA PELO BOTÃO
+// 💧 TELA 3: SISTEMA DE IRRIGAÇÃO
 // ==========================================================================
 const slider = document.getElementById('slider-agua');
 if(slider) {
     slider.addEventListener('input', (e) => {
         let valor = e.target.value;
-        document.getElementById('valor-slider').innerText = valor + "%";
+        if(document.getElementById('valor-slider')) document.getElementById('valor-slider').innerText = valor + "%";
         
         let aguaGasta = Math.round(simulacao.aguaBase * (valor / 50));
         let desperdicio = valor > 60 ? Math.round(aguaGasta * (valor / 100)) : 0;
@@ -94,15 +94,15 @@ if(slider) {
         simulacao.aguaUtilizada = aguaGasta;
         simulacao.eficienciaIrrigacao = eficiencia;
 
-        document.getElementById('res-agua').innerText = aguaGasta;
-        document.getElementById('res-desperdicio').innerText = desperdicio;
-        document.getElementById('res-eficiencia').innerText = Math.max(0, eficiencia);
+        if(document.getElementById('res-agua')) document.getElementById('res-agua').innerText = aguaGasta;
+        if(document.getElementById('res-desperdicio')) document.getElementById('res-desperdicio').innerText = desperdicio;
+        if(document.getElementById('res-eficiencia')) document.getElementById('res-eficiencia').innerText = Math.max(0, eficiencia);
 
         if(eficiencia > 90) {
-            document.getElementById('bonus-sustentavel').classList.remove('hidden');
+            if(document.getElementById('bonus-sustentavel')) document.getElementById('bonus-sustentavel').classList.remove('hidden');
             verificarConquista('💧 Agricultor Verde');
         } else {
-            document.getElementById('bonus-sustentavel').classList.add('hidden');
+            if(document.getElementById('bonus-sustentavel')) document.getElementById('bonus-sustentavel').classList.add('hidden');
         }
 
         if(desperdicio > 300) {
@@ -119,64 +119,128 @@ function confirmarIrrigacao() {
 }
 
 // ==========================================================================
-// ⚡ TELA 4: ENERGIA ➡️ AVANÇA PRO CLIQUE
+// ⚡ TELA 4: ENERGIA (BARRAS E NÚMEROS INCREMENTAIS)
 // ==========================================================================
-function selecionarEnergia(tipo, custo, emissoes, ecoPontos) {
+let timerCusto; 
+let timerEmissoes;
+
+function selecionarEnergia(tipo, custo, emissoes) {
     simulacao.tipoEnergia = tipo;
     simulacao.custoEnergia = custo;
     
     if(tipo === 'Solar') verificarConquista('☀️ Mestre da Sustentabilidade');
 
-    const canvas = document.getElementById('grafico-energia');
-    if(canvas) {
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#e53935';
-        ctx.fillRect(50, 50, custo / 3, 30);
-        ctx.fillStyle = 'var(--text-color)';
-        ctx.fillText(`Custo ($${custo})`, 50, 45);
+    clearInterval(timerCusto);
+    clearInterval(timerEmissoes);
 
-        ctx.fillStyle = '#757575';
-        ctx.fillRect(50, 120, emissoes / 3, 30);
-        ctx.fillStyle = 'var(--text-color)';
-        ctx.fillText(`Emissões (${emissoes}kg)`, 50, 115);
+    if(document.getElementById('titulo-energia-selecionada')) {
+        document.getElementById('titulo-energia-selecionada').innerText = `Análise: Energia ${tipo}`;
     }
 
-    mostrarToast(`⚡ Energia ${tipo} selecionada! Gerando Dashboard...`);
+    let elementoCusto = document.getElementById('txt-custo');
+    let custoAtual = 0;
+    let passoCusto = Math.ceil(custo / 20);
+
+    if(elementoCusto) {
+        timerCusto = setInterval(() => {
+            custoAtual += passoCusto;
+            if (custoAtual >= custo) {
+                elementoCusto.innerText = `$${custo}`;
+                clearInterval(timerCusto);
+            } else {
+                elementoCusto.innerText = `$${custoAtual}`;
+            }
+        }, 25);
+    }
+
+    let elementoEmissoes = document.getElementById('txt-emissoes');
+    let emissoesAtuais = 0;
+    let passoEmissoes = Math.ceil(emissoes / 20);
+
+    if(elementoEmissoes) {
+        timerEmissoes = setInterval(() => {
+            emissoesAtuais += passoEmissoes;
+            if (emissoesAtuais >= emissoes) {
+                elementoEmissoes.innerText = `${emissoes} kg`;
+                clearInterval(timerEmissoes);
+            } else {
+                elementoEmissoes.innerText = `${emissoesAtuais} kg`;
+            }
+        }, 25);
+    }
+
+    let porcCusto = (custo / 500) * 100;
+    let porcEmissoes = (emissoes / 1000) * 100;
 
     setTimeout(() => {
+        if(document.getElementById('barra-custo')) document.getElementById('barra-custo').style.width = porcCusto + '%';
+        if(document.getElementById('barra-emissoes')) document.getElementById('barra-emissoes').style.width = porcEmissoes + '%';
+    }, 50);
+
+    if(document.getElementById('btn-avancar-energia')) document.getElementById('btn-avancar-energia').classList.remove('hidden');
+    mostrarToast(`Calculando impactos da Energia ${tipo}...`);
+}
+
+function confirmarEnergia() {
+    mostrarToast("⚡ Matriz energética salva! Gerando Dashboard...");
+    setTimeout(() => {
         mudarTela('dashboard');
-    }, 1200);
+    }, 800);
 }
 
 // ==========================================================================
-// 🌎 TELA 5: DASHBOARD ➡️ AVANÇA PELO BOTÃO
+// 🌎 TELA 5: DASHBOARD (PIZZA FIXADO SEM ERROS)
 // ==========================================================================
 function atualizarDashboard() {
-    document.getElementById('dash-cultura').innerText = simulacao.cultura || "Não escolhida";
-    document.getElementById('dash-agua').innerText = simulacao.aguaUtilizada;
-    document.getElementById('dash-custo-energia').innerText = simulacao.custoEnergia;
+    if(document.getElementById('dash-cultura')) document.getElementById('dash-cultura').innerText = simulacao.cultura || "Não escolhida";
+    if(document.getElementById('dash-agua')) document.getElementById('dash-agua').innerText = `${simulacao.aguaUtilizada} Litros`;
+    if(document.getElementById('dash-custo-energia')) document.getElementById('dash-custo-energia').innerText = `$${simulacao.custoEnergia}`;
+    if(document.getElementById('dash-tipo-energia')) document.getElementById('dash-tipo-energia').innerText = simulacao.tipoEnergia || "Não escolhido";
     
-    let sust = Math.round((simulacao.eficienciaIrrigacao + (simulacao.tipoEnergia === 'Solar' ? 100 : 30)) / 2);
-    document.getElementById('dash-sustentabilidade').innerText = isNaN(sust) ? 0 : sust;
+    let lucroCalculado = simulacao.lucroBase || 0;
+    if(document.getElementById('dash-lucro')) document.getElementById('dash-lucro').innerText = `$${lucroCalculado.toLocaleString('pt-BR')}`;
+    
+    let bonusEnergia = simulacao.tipoEnergia === 'Solar' ? 100 : (simulacao.tipoEnergia === 'Elétrica' ? 50 : 10);
+    let sust = Math.round((simulacao.eficienciaIrrigacao + bonusEnergia) / 2);
+    if (isNaN(sust)) sust = 0;
+    if(document.getElementById('dash-sustentabilidade')) document.getElementById('dash-sustentabilidade').innerText = sust;
+
+    let diagnosticoTexto = "";
+    if (sust >= 85) {
+        diagnosticoTexto = "🏆 Excelente! Sua fazenda alcançou o equilíbrio perfeito entre alta lucratividade e preservação ambiental extrema.";
+    } else if (sust >= 50) {
+        diagnosticoTexto = "⚠️ Bom progresso, mas pode melhorar. Tente otimizar o uso da água na irrigação ou migrar para uma matriz energética 100% limpa.";
+    } else {
+        diagnosticoTexto = "🚨 Alerta Crítico! Alto impacto ambiental detectado. Seu consumo de recursos está acima do recomendado para uma produção sustentável.";
+    }
+    if(document.getElementById('dash-diagnostico')) document.getElementById('dash-diagnostico').innerText = diagnosticoTexto;
 
     const canvas = document.getElementById('grafico-dashboard');
     if(canvas) {
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        let dados = [simulacao.aguaUtilizada || 100, simulacao.custoEnergia || 100];
+        let dados = [simulacao.aguaUtilizada || 150, simulacao.custoEnergia || 150];
         let cores = ['#4caf50', '#ffb74d'];
         let total = dados.reduce((a, b) => a + b, 0);
-        let anguloAtual = 0;
+        let anguloAtual = -Math.PI / 2;
+
+        let centroX = 225;
+        let centroY = 225;
+        let raio = 180;
 
         dados.forEach((val, i) => {
             let fatias = (val / total) * Math.PI * 2;
             ctx.beginPath();
-            ctx.moveTo(150, 150);
-            ctx.arc(150, 150, 100, anguloAtual, anguloAtual + fatias);
+            ctx.moveTo(centroX, centroY);
+            ctx.arc(centroX, centroY, raio, anguloAtual, anguloAtual + fatias);
             ctx.fillStyle = cores[i];
             ctx.fill();
+            
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
+            
             anguloAtual += fatias;
         });
     }
@@ -190,7 +254,7 @@ function confirmarDashboard() {
 }
 
 // ==========================================================================
-// 🎯 TELA 6: DESAFIOS & CONQUISTAS ➡️ AVANÇA PELO BOTÃO
+// 🎯 TELA 6: DESAFIOS & CONQUISTAS DINÂMICAS ACENDENDO EM TELA
 // ==========================================================================
 function verificarConquista(nomeConquista) {
     if(!simulacao.conquistas.includes(nomeConquista)) {
@@ -198,7 +262,6 @@ function verificarConquista(nomeConquista) {
         localStorage.setItem('conquistas', JSON.stringify(simulacao.conquistas));
         tocarSomAcerto();
         mostrarToast(`🏅 Conquista: ${nomeConquista}`);
-        renderizarMedalhas();
     }
 }
 
@@ -206,12 +269,44 @@ function renderizarMedalhas() {
     const container = document.getElementById('medalhas-container');
     if(!container) return;
     container.innerHTML = '';
-    simulacao.conquistas.forEach(med => {
-        let div = document.createElement('div');
-        div.className = 'card-contador';
-        div.innerText = med;
-        container.appendChild(div);
-    });
+
+    let cardAgua = document.getElementById('card-missao-agua');
+    let iconeAgua = document.getElementById('icone-missao-agua');
+    let statusAgua = document.getElementById('status-missao-agua');
+    
+    if (simulacao.eficienciaIrrigacao > 80) {
+        if(cardAgua) cardAgua.style.borderLeft = "6px solid #4caf50";
+        if(cardAgua) cardAgua.style.background = "rgba(76, 175, 80, 0.08)";
+        if(iconeAgua) iconeAgua.innerText = "✅";
+        if(statusAgua) { statusAgua.innerText = "Cumprido!"; statusAgua.style.color = "#4caf50"; }
+        container.innerHTML += `<div class="card-contador" style="border: 2px solid #4caf50; box-shadow: 0 0 15px rgba(76,175,80,0.3);">🏅 Guardião da Água</div>`;
+    } else {
+        if(cardAgua) cardAgua.style.borderLeft = "6px solid #f44336";
+        if(cardAgua) cardAgua.style.background = "rgba(244, 67, 54, 0.04)";
+        if(iconeAgua) iconeAgua.innerText = "❌";
+        if(statusAgua) { statusAgua.innerText = "Não Atingido"; statusAgua.style.color = "#f44336"; }
+    }
+
+    let cardEnergia = document.getElementById('card-missao-energia');
+    let iconeEnergia = document.getElementById('icone-missao-energia');
+    let statusEnergia = document.getElementById('status-missao-energia');
+
+    if (simulacao.tipoEnergia === 'Solar') {
+        if(cardEnergia) cardEnergia.style.borderLeft = "6px solid #4caf50";
+        if(cardEnergia) cardEnergia.style.background = "rgba(76, 175, 80, 0.08)";
+        if(iconeEnergia) iconeEnergia.innerText = "✅";
+        if(statusEnergia) { statusEnergia.innerText = "Cumprido!"; statusEnergia.style.color = "#4caf50"; }
+        container.innerHTML += `<div class="card-contador" style="border: 2px solid #ffb74d; box-shadow: 0 0 15px rgba(255,183,77,0.3);">🏅 Carbono Zero</div>`;
+    } else {
+        if(cardEnergia) cardEnergia.style.borderLeft = "6px solid #ff9800";
+        if(cardEnergia) cardEnergia.style.background = "rgba(255, 152, 0, 0.04)";
+        if(iconeEnergia) iconeEnergia.innerText = "🚜";
+        if(statusEnergia) { statusEnergia.innerText = "Use Solar"; statusEnergia.style.color = "#ff9800"; }
+    }
+
+    if (container.innerHTML === '') {
+        container.innerHTML = `<p style="grid-column: span 2; opacity: 0.6; font-style: italic;">Nenhuma medalha conquistada nesta rodada.</p>`;
+    }
 }
 
 function confirmarDesafios() {
@@ -232,19 +327,56 @@ function perguntarIA() {
     if(input.includes("água") || input.includes("irrigação")) {
         resposta = "🤖 Dica: Deixe o slider em 50% para obter 100% de eficiência!";
     } else if(input.includes("energia") || input.includes("solar")) {
-        resposta = "🤖 Dica: A energia Solar zera suas emissões poluentes.";
+        resposta = "🤖 Dica: A energia Solar zera suas emissões poluentes e garante nota máxima.";
     } else if(input.includes("lucro")) {
         resposta = "🤖 Dica: O Café dá muito lucro, mas consome muita água!";
     }
 
-    output.innerHTML += `<p><strong>Você:</strong> ${input}</p>`;
-    output.innerHTML += `<p class="bot-msg">${resposta}</p>`;
-    document.getElementById('chat-input').value = '';
-    output.scrollTop = output.scrollHeight;
+    if(output) {
+        output.innerHTML += `<p><strong>Você:</strong> ${input}</p>`;
+        output.innerHTML += `<p class="bot-msg">${resposta}</p>`;
+        document.getElementById('chat-input').value = '';
+        output.scrollTop = output.scrollHeight;
+    }
 }
 
 // ==========================================================================
-// 🌙 EXTRAS: TEMA & UTILS
+// 🔄 RECOMEÇAR SIMULAÇÃO DO ZERO
+// ==========================================================================
+function recomecarSimulacao() {
+    simulacao.cultura = '';
+    simulacao.aguaBase = 0;
+    simulacao.lucroBase = 0;
+    simulacao.impactoBase = 0;
+    simulacao.aguaUtilizada = 0;
+    simulacao.eficienciaIrrigacao = 0;
+    simulacao.tipoEnergia = '';
+    simulacao.custoEnergia = 0;
+
+    if(document.getElementById('status-fazenda')) document.getElementById('status-fazenda').innerText = '';
+    if(document.getElementById('valor-slider')) document.getElementById('valor-slider').innerText = "50%";
+    if(document.getElementById('slider-agua')) document.getElementById('slider-agua').value = 50;
+    if(document.getElementById('res-agua')) document.getElementById('res-agua').innerText = '0';
+    if(document.getElementById('res-desperdicio')) document.getElementById('res-desperdicio').innerText = '0';
+    if(document.getElementById('res-eficiencia')) document.getElementById('res-eficiencia').innerText = '0';
+    
+    if(document.getElementById('titulo-energia-selecionada')) document.getElementById('titulo-energia-selecionada').innerText = "Selecione uma opção acima";
+    if(document.getElementById('txt-custo')) document.getElementById('txt-custo').innerText = "$0";
+    if(document.getElementById('txt-emissoes')) document.getElementById('txt-emissoes').innerText = "0 kg";
+    if(document.getElementById('barra-custo')) document.getElementById('barra-custo').style.width = "0%";
+    if(document.getElementById('barra-emissoes')) document.getElementById('barra-emissoes').style.width = "0%";
+    if(document.getElementById('btn-avancar-energia')) document.getElementById('btn-avancar-energia').classList.add('hidden');
+
+    if(document.getElementById('chat-output')) {
+        document.getElementById('chat-output').innerHTML = `<p class="bot-msg">Olá! O sistema foi reiniciado. Pergunte-me sobre "água", "energia", "lucro" ou "sustentabilidade".</p>`;
+    }
+
+    mostrarToast("🔄 Simulação reiniciada! Boa sorte na nova rodada.");
+    mudarTela('home');
+}
+
+// ==========================================================================
+// 🌙 EXTRAS: TEMA & AUDIO UTILS
 // ==========================================================================
 const btnTheme = document.getElementById('btn-theme');
 if (btnTheme) {
