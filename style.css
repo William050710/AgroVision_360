@@ -567,3 +567,12 @@ footer {
         grid-column: span 1 !important;
     }
 }
+.tela p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 15px;
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-color);
+    margin-bottom: 20px;
+}
