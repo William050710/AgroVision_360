@@ -27,22 +27,41 @@
     <main>
         <section id="tela-home" class="tela ativa">
             <div class="hero">
-                <h1>Cultive o Futuro Sustentável</h1>
-                <p>Simule decisões agrícolas e veja o impacto real no planeta de forma simples e educativa.</p>
+                <h1>AgroVision: O Futuro do Campo em Suas Mãos</h1>
+                
+                <div style="background: rgba(46, 125, 50, 0.1); padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 5px solid var(--primary-color);">
+                    Simule decisões agrícolas e veja o impacto no planeta de forma simples e educativa.
+                    <br><br>
+                    <strong>Clique no botão verde abaixo e começe a sua Simulação.</strong>
+                </div>
+
                 <button class="btn-principal" onclick="mudarTela('fazenda')">Começar Simulação</button>
             </div>
             <div class="contadores">
-                <div class="card-contador"><h3 id="count-agua">0</h3><p>Litros economizados</p></div>
-                <div class="card-contador"><h3 id="count-co2">0</h3><p>Kg de CO₂ reduzido</p></div>
-                <div class="card-contador"><h3 id="count-arvores">0</h3><p>Árvores salvas</p></div>
-            </div>
+    <div class="card-contador">
+        <h3>Ambiental</h3>
+        <p>Preservação de recursos naturais</p>
+    </div>
+    <div class="card-contador">
+        <h3>Econômico</h3>
+        <p>Evitar desperdício e custos altos</p>
+    </div>
+    <div class="card-contador">
+        <h3>Produtivo</h3>
+        <p>Garantir a saúde da plantação</p>
+    </div>
+</div>
         </section>
 
         <section id="tela-fazenda" class="tela hidden">
             <h2>Escolha sua Plantação</h2>
-            <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem;">
-                💡 **O que avaliar?** Cada planta consome uma quantidade diferente de água e dá um retorno financeiro distinto. Culturas de alto lucro geralmente exigem mais recursos do planeta! Encontrar o equilíbrio é o segredo.
-            </p>
+            
+            <div style="background: rgba(46, 125, 50, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary-color);">
+                Clique em cima de um dos 4 cards abaixo para escolher o que você vai plantar.
+                <br><br>
+                <strong>Cada planta consome uma quantidade diferente de água e dá um lucro diferente, sendo que culturas de alto lucro geralmente gastam mais recursos do planeta.</strong>
+            </div>
+
             <div class="grid-culturas">
                 <div class="card-cultura" onclick="selecionarCultura('Soja', 500, 1200, 4)">
                     <div class="card-conteudo"><span class="emoji-cultura">🌱</span><h3>Soja</h3><p>Consumo Água: Alto | Lucro: Alto</p></div>
@@ -61,30 +80,48 @@
         </section>
 
         <section id="tela-irrigacao" class="tela hidden">
-            <h2>💧 Controle de Irrigação</h2>
-            <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem;">
-                💡 **Como funciona?** Regar demais a planta faz a água escorrer e evaporar (gerando desperdício desnecessário). Regar de menos faz a planta morrer de sede. **O objetivo é achar o ponto de equilíbrio (100% de eficiência)** perto do meio do seletor!
-            </p>
-            <div class="controle-slider">
-                <label for="slider-agua">Quantidade de Água:</label>
-                <input type="range" id="slider-agua" min="1" max="100" value="50">
-                <span id="valor-slider">50%</span>
-            </div>
-            <div class="resultados-reais">
-                <p>Água Utilizada: <span id="res-agua">0</span>L</p>
-                <p>Desperdício: <span id="res-desperdicio">0</span>L</p>
-                <p>Eficiência: <span id="res-eficiencia">0</span>%</p>
-                <p id="bonus-sustentavel" class="bonus hidden">🌟 Bônus Sustentável Ativado!</p>
-            </div>
-            <br>
-            <button class="btn-principal" onclick="confirmarIrrigacao()">Confirmar e Avançar ➡️</button>
-        </section>
+    <h2>💧 Controle de Irrigação e Hectares</h2></div>
+                </div>
+    
+    <div style="background: rgba(46, 125, 50, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary-color);">
+        Arraste a barra azul para ajustar a quantidade de água e hectare na plantação e clique no botão verde "Confirmar e Avançar"
+        <br><br>
+        <strong>Regar demais gera desperdício e regar de menos faz a planta morrer de sede, então tente achar o ponto de equilíbrio perfeito de 100% de eficiência perto do meio.</strong>
+    </div>
+
+    <div class="controle-slider">
+       <label for="slider-agua">Irrigação (% da necessidade):</label>
+<input type="range" id="slider-agua" min="0" max="200" value="100">
+<span id="valor-slider">100%</span>
+    </div>
+
+    <div class="controle-slider" style="margin-top: 20px;">
+        <label for="slider-hectares" style="color: #2e7d32;">Tamanho da Plantação (Hectares):</label>
+        <input type="range" id="slider-hectares" min="1" max="50" value="5" style="accent-color: #2e7d32;">
+        <span id="valor-hectares" style="color: #2e7d32; font-weight: bold;">5 ha</span>
+    </div>
+
+   <div class="resultados-reais">
+    <p>Área Selecionada: <span id="res-hectares">5</span> ha</p>
+   <p>Água Aplicada: <span id="res-agua">0</span></p>
+<p>Desperdício: <span id="res-desperdicio">0</span></p>
+    <p>Eficiência: <span id="res-eficiencia">0</span>%</p>
+    <p id="bonus-sustentavel" class="bonus hidden">🌟 Bônus Sustentável Ativado!</p>
+</div>
+
+    <br>
+    <button class="btn-principal" onclick="confirmarIrrigacao()">Confirmar e Avançar ➡️</button>
+</section>
 
         <section id="tela-energia" class="tela hidden">
             <h2>☀️ Matriz Energética</h2>
-            <p style="text-align: center; opacity: 0.9; margin-bottom: 1.5rem;">
-                💡 **Qual o impacto?** Bombas de água precisam de eletricidade ou motores para funcionar. O **Diesel** é barato para instalar, mas queima combustível fóssil e polui o ar (libera CO₂). A energia **Solar** é limpa e renovável, mas exige investimento inicial!
-            </p>
+            
+            <div style="background: rgba(46, 125, 50, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary-color);">
+                Clique em uma das 3 fontes de energia abaixo para ver seu custo e o nível de poluição no gráfico de barras e quando escolher a melhor clique no botão verde para avançar.
+                <br><br>
+                <strong>O Diesel é barato mas solta muita fumaça poluente de CO2, enquanto a energia Solar é totalmente limpa e ecológica mas exige um investimento.</strong>
+            </div>
+
             <div class="grid-energia">
                 <button class="btn-energia" onclick="selecionarEnergia('Diesel', 500, 1000)">🚜 Diesel (Poluente)</button>
                 <button class="btn-energia" onclick="selecionarEnergia('Elétrica', 250, 500)">⚡ Elétrica (Mista)</button>
@@ -92,7 +129,7 @@
             </div>
             <div class="comparador" style="max-width: 500px; margin: 2rem auto; text-align: left;">
                 <h3 id="titulo-energia-selecionada" style="text-align: center; color: var(--primary-color);">Selecione uma opção</h3>
-                <div><span>Custo Operacional (Dinheiro gasto):</span> <span id="txt-custo">$0</span></div>
+                <div><span>Custo Operacional (Dinheiro gasto, aproximadamente):</span> <span id="txt-custo">$0</span></div>
                 <div style="width:100%; height:12px; background:rgba(0,0,0,0.1); border-radius:6px; overflow:hidden; margin-bottom:1rem;">
                     <div id="barra-custo" style="width:0%; height:100%; background:#e53935; transition:width 0.5s;"></div>
                 </div>
@@ -108,18 +145,25 @@
 
         <section id="tela-dashboard" class="tela hidden">
             <h2>🌎 Painel de Controle Ambiental</h2>
+            
+            <div style="background: rgba(46, 125, 50, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary-color);">
+                Analise os seus resultados finais do simulador.
+                <br><br>
+                <strong>O gráfico circular mostra a proporção do uso de água em verde contra o gasto de energia em laranja. Depois clique no botão abaixo para ver se cumpriu os desafios.</strong>
+            </div>
+
             <div class="dashboard-layout">
                 <div class="dashboard-col-grafico">
                     <canvas id="grafico-dashboard" width="450" height="450"></canvas>
                 </div>
                 <div class="dashboard-col-info">
                     <div class="resumo-indicadores">
-                        <div class="mini-card-dash"><span>Cultura:</span><strong id="dash-cultura">-</strong></div>
-                        <div class="mini-card-dash"><span>Água Total:</span><strong id="dash-agua">0 L</strong></div>
-                        <div class="mini-card-dash"><span>Custo Energia:</span><strong id="dash-custo-energia">$0</strong></div>
-                        <div class="mini-card-dash"><span>Matriz:</span><strong id="dash-tipo-energia">-</strong></div>
+                        <div class="mini-card-dash"><span>Cultura escolhida:</span><strong id="dash-cultura">-</strong></div>
+                        <div class="mini-card-dash"><span>Água Total Gasta:</span><strong id="dash-agua">0 L</strong></div>
+                        <div class="mini-card-dash"><span>Custo da Energia:</span><strong id="dash-custo-energia">$0</strong></div>
+                        <div class="mini-card-dash"><span>Matriz de Energia:</span><strong id="dash-tipo-energia">-</strong></div>
                         <div class="mini-card-dash"><span>Retorno Financeiro:</span><strong id="dash-lucro">$0</strong></div>
-                        <div class="mini-card-dash"><span>Sustentabilidade:</span><strong id="dash-sustentabilidade">0</strong></div>
+                        <div class="mini-card-dash"><span>Nota de Sustentabilidade:</span><strong id="dash-sustentabilidade">0</strong></div>
                         <div class="mini-card-dash" style="grid-column: span 2;"><p id="dash-diagnostico">Rode a simulação.</p></div>
                     </div>
                 </div>
@@ -131,6 +175,13 @@
 
         <section id="tela-desafios" class="tela hidden">
             <h2>🎯 Missões da Rodada</h2>
+            
+            <div style="background: rgba(46, 125, 50, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary-color);">
+                Descubra se suas decisões foram ecológicas o suficiente para desbloquear medalhas na rodada atual.
+                <br><br>
+                <strong>Após analisar os seus recordes e conquistas, avance para o chat com a nossa Inteligência Artificial.</strong>
+            </div>
+
             <div class="missoes">
                 <div class="missao-card" id="card-missao-agua">
                     <div class="missao-icone" id="icone-missao-agua">⏳</div>
@@ -152,6 +203,13 @@
 
         <section id="tela-ia" class="tela hidden">
             <h2>🤖 Assistente AgroVision IA</h2>
+            
+            <div style="background: rgba(46, 125, 50, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary-color);">
+                Digite uma palavra como água, energia ou lucro na caixinha de texto branca abaixo e clique em Enviar para receber conselhos da nossa IA simulada.
+                <br><br>
+                <strong>Se quiser jogar novamente para tentar tirar uma nota melhor e corrigir sua estratégia, clique no botão vermelho Recomeçar Simulação.</strong>
+            </div>
+
             <div class="chat-box">
                 <div id="chat-output" class="chat-output"><p class="bot-msg">Olá! Pergunte algo sobre a fazenda ("água", "energia", "lucro").</p></div>
                 <div class="chat-input-area">
@@ -168,3 +226,14 @@
     <script src="script.js"></script>
 </body>
 </html>
+<footer>
+   <footer>
+    <div class="footer-content">
+        <p>&copy; 2026 - Projeto Concurso Agrinho</p>
+        <p>AgroVision</p>
+    </div>
+</footer>
+
+</body>
+</html>
+    </div>
