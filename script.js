@@ -333,7 +333,10 @@ function renderizarMedalhas() {
     let iconeAgua = document.getElementById('icone-missao-agua');
     let statusAgua = document.getElementById('status-missao-agua');
     
-    if (simulacao.eficienciaIrrigacao > 80) {
+    if (
+    simulacao.cultura !== '' &&
+    simulacao.eficienciaIrrigacao > 80
+) {
         if(cardAgua) cardAgua.style.borderLeft = "6px solid #4caf50";
         if(cardAgua) cardAgua.style.background = "rgba(76, 175, 80, 0.08)";
         if(iconeAgua) iconeAgua.innerText = "✅";
@@ -350,7 +353,10 @@ function renderizarMedalhas() {
     let iconeEnergia = document.getElementById('icone-missao-energia');
     let statusEnergia = document.getElementById('status-missao-energia');
 
-    if (simulacao.tipoEnergia === 'Solar') {
+   if (
+    simulacao.cultura !== '' &&
+    simulacao.tipoEnergia === 'Solar'
+) {
         if(cardEnergia) cardEnergia.style.borderLeft = "6px solid #4caf50";
         if(cardEnergia) cardEnergia.style.background = "rgba(76, 175, 80, 0.08)";
         if(iconeEnergia) iconeEnergia.innerText = "✅";
@@ -410,11 +416,17 @@ function recomecarSimulacao() {
     simulacao.aguaUtilizada = 0;
     simulacao.eficienciaIrrigacao = 0;
     simulacao.tipoEnergia = '';
-    simulacao.custoEnergia = 0;
+simulacao.custoEnergia = 0;
+simulacao.conquistas = [];
+localStorage.removeItem('conquistas');
+localStorage.removeItem('cultura');
+localStorage.removeItem('aguaBase');
+localStorage.removeItem('lucroBase');
+localStorage.removeItem('impactoBase');
 
     if(document.getElementById('status-fazenda')) document.getElementById('status-fazenda').innerText = '';
-    if(document.getElementById('valor-slider')) document.getElementById('valor-slider').innerText = "50%";
-    if(document.getElementById('slider-agua')) document.getElementById('slider-agua').value = 50;
+    if(document.getElementById('valor-slider')) document.getElementById('valor-slider').innerText = "100%";
+    if(document.getElementById('slider-agua')) document.getElementById('slider-agua').value = 100;
     if(document.getElementById('res-agua')) document.getElementById('res-agua').innerText = '0';
     if(document.getElementById('res-desperdicio')) document.getElementById('res-desperdicio').innerText = '0';
     if(document.getElementById('res-eficiencia')) document.getElementById('res-eficiencia').innerText = '0';
@@ -433,6 +445,14 @@ function recomecarSimulacao() {
     mostrarToast("🔄 Simulação reiniciada! Boa sorte na nova rodada.");
     mudarTela('home');
 }
+if(document.getElementById('slider-hectares'))
+    document.getElementById('slider-hectares').value = 5;
+
+if(document.getElementById('valor-hectares'))
+    document.getElementById('valor-hectares').innerText = '5 ha';
+
+if(document.getElementById('res-hectares'))
+    document.getElementById('res-hectares').innerText = '5';
 
 // ==========================================================================
 // 🌙 EXTRAS: TEMA & AUDIO UTILS
